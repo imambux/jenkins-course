@@ -1,6 +1,6 @@
 job('NodeJS Docker example') {
     scm {
-        git('git://github.com/imambux/docker-demo.git') {  node -> // is hudson.plugins.git.GitSCM
+        git('https://github.com/imambux/docker-demo.git') {  node -> // is hudson.plugins.git.GitSCM
             node / gitConfigName('DSL User')
             node / gitConfigEmail('imambuxpk@gmail.com')
         }
