@@ -1,25 +1,25 @@
 node {
-    def server = Artifactory.server('newtechacademy.jfrog.io')
-    def rtGradle = Artifactory.newGradleBuild()
+    def server = Artifactory.server('imambux.jfrog.io')
+    def rtMaven = Artifactory.newMavenBuild()
     def buildInfo = Artifactory.newBuildInfo()
     stage 'Build'
-        git url: 'https://github.com/wardviaene/gs-gradle.git'
+        git url: 'https://github.com/imambux/gs-maven.git'
 
     stage 'Artifactory configuration'
-        rtGradle.tool = 'gradle' // Tool name from Jenkins configuration
-        rtGradle.deployer repo:'gradle-dev-local',  server: server
-        rtGradle.resolver repo:'gradle-dev', server: server
+        rtMaven.tool = 'maven' // Tool name from Jenkins configuration
+        rtMaven.deployer repo:'ibm-dev-local',  server: server
+        rtMaven.resolver repo:'ibm-dev', server: server
 
         stage('Config Build Info') {
             buildInfo.env.capture = true
             buildInfo.env.filter.addInclude("*")
         }
 
-        stage('Extra gradle configurations') {
-            rtGradle.usesPlugin = true // Artifactory plugin already defined in build script
+        stage('Extra Maven configurations') {
+            rtMaven.usesPlugin = true // Artifactory plugin already defined in build script
         }
-        stage('Exec Gradle') {
-            rtGradle.run rootDir: "artifactory/", buildFile: 'build.gradle', tasks: 'clean artifactoryPublish', buildInfo: buildInfo
+        stage('Exec Maven') {
+            rtMaven.run rootDir: "artifactory/", buildFile: 'pom.xml', tasks: 'clean publish', buildInfo: buildInfo
         }
         stage('Publish build info') {
             server.publishBuildInfo buildInfo
