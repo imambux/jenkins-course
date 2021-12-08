@@ -19,7 +19,7 @@ node {
             rtMaven.usesPlugin = true // Artifactory plugin already defined in build script
         }
         stage('Exec Maven') {
-            rtMaven.run rootDir: "artifactory/", buildFile: 'pom.xml', tasks: 'clean publish', buildInfo: buildInfo
+            rtMaven.run rootDir: "complete/", buildFile: 'pom.xml', tasks: 'clean publish', buildInfo: buildInfo
         }
         stage('Publish build info') {
             server.publishBuildInfo buildInfo
